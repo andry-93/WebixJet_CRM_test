@@ -1,3 +1,5 @@
+const dateFormat = webix.Date.strToDate("%Y-%m-%d");
+
 export const contacts = new webix.DataCollection({
 	data: [
 		{
@@ -9,7 +11,7 @@ export const contacts = new webix.DataCollection({
 			Phone: "145455775511",
 			Email: "alex@gmail.com",
 			Photo: "./sources/styles/img/nouser.jpg",
-			Birthday: "07-07-1970"
+			Birthday: "1970-07-07"
 		},
 		{
 			id: 2,
@@ -20,7 +22,7 @@ export const contacts = new webix.DataCollection({
 			Phone: "155457871111",
 			Email: "doris@gmail.com",
 			Photo: "./sources/styles/img/nouser.jpg",
-			Birthday: "03-05-1976"
+			Birthday: "1976-05-03"
 		},
 		{
 			id: 3,
@@ -31,7 +33,13 @@ export const contacts = new webix.DataCollection({
 			Phone: "744545554391",
 			Email: "alex@gmail.com",
 			Photo: "./sources/styles/img/nouser.jpg",
-			Birthday: "17-07-1990"
+			Birthday: "1990-07-17"
 		}
-	]
+	],
+	scheme: {
+		$init: (obj) => {
+			obj.value = `${obj.FirstName} ${obj.LastName}`;
+			obj.Birthday = dateFormat(obj.Birthday);
+		}
+	}
 });
