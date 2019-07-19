@@ -12,21 +12,22 @@ export default class TopView extends JetView {
 			template: "<span class='fas #icon#' style='width: 18px;'></span> #value# ",
 			on: {
 				onAfterSelect: () => {
-					this.$$("headerApp").setHTML(this.$$("top:menu").getSelectedItem().value);
+					let {icon, value} = this.$$("top:menu").getSelectedItem();
+					this.$$("headerApp").setHTML(`<span class='fas ${icon}'></span> ${value}`);
 				}
 			},
 			data: [
 				{value: "Contacts", id: "contacts", icon: "fa-users"},
-				{value: "Activities", id: "activities", icon: "fa-calendar-alt"},
+				{value: "Companies", id: "companies", icon: "fa-building"},
 				{value: "Settings", id: "settings", icon: "fa-cogs"}
 			]
 		};
 
-		let ui = {
+		return {
 			type: "clean",
 			css: "app_layout",
 			rows: [
-				{localId: "headerApp", type: "header", template: "Activaties", css: "webix_header webix_dark"},
+				{localId: "headerApp", type: "header", template: "Companies", css: "webix_header webix_dark"},
 				{
 					cols: [
 						{
@@ -42,8 +43,6 @@ export default class TopView extends JetView {
 				}
 			]
 		};
-
-		return ui;
 	}
 
 	init() {
