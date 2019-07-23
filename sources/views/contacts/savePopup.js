@@ -28,36 +28,43 @@ export default class SaveForm extends JetView {
 					{
 						view: "text",
 						name: "FirstName",
+						placeholder: "First name",
 						label: "First name"
 					},
 					{
 						view: "text",
 						name: "LastName",
+						placeholder: "Last name",
 						label: "Last name"
 					},
 					{
 						view: "text",
 						name: "Address",
-						label: "Birthday"
+						placeholder: "Address",
+						label: "Address"
 					},
 					{
 						view: "text",
 						name: "Skype",
+						placeholder: "Skype",
 						label: "Skype"
 					},
 					{
 						view: "text",
 						name: "Phone",
+						placeholder: "+ 12 345 678 90 12",
 						label: "Phone"
 					},
 					{
 						view: "text",
 						name: "Email",
+						placeholder: "email@email.com",
 						label: "Email"
 					},
 					{
 						view: "datepicker",
 						name: "Birthday",
+						placeholder: "dd/mm/YYYY",
 						label: "Birthday"
 					},
 					{
@@ -79,7 +86,13 @@ export default class SaveForm extends JetView {
 						]
 					}
 				],
-				rules: {}
+				rules: {
+					FirstName: webix.rules.isNotEmpty,
+					LastName: webix.rules.isNotEmpty,
+					Phone: webix.rules.isNumber,
+					Email: webix.rules.isEmail,
+					Birthday: value => value < new Date() && value !== null
+				}
 			}
 		};
 	}

@@ -96,6 +96,11 @@ export default class Companies extends JetView {
 					],
 					onClick: {
 						"wxi-trash": this.deleteColumn
+					},
+					rules: {
+						value: webix.rules.isNotEmpty,
+						Address: webix.rules.isNotEmpty,
+						Email: webix.rules.isEmail
 					}
 				}
 			]

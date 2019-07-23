@@ -44,7 +44,6 @@ export default class Contacts extends JetView {
 				{
 					view: "datatable",
 					localId: "contactTable",
-					select: true,
 					rightSplit: 2,
 					columns: [
 						{
