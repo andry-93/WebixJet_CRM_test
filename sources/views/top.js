@@ -19,6 +19,7 @@ export default class TopView extends JetView {
 			data: [
 				{value: "Contacts", id: "contacts", icon: "fa-users"},
 				{value: "Companies", id: "companies", icon: "fa-building"},
+				{value: "Contact card", id: "contactCard", icon: "fa-id-card"},
 				{value: "Settings", id: "settings", icon: "fa-cogs"}
 			]
 		};

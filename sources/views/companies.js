@@ -1,4 +1,4 @@
-import {JetView} from "webix-jet/dist/types";
+import {JetView} from "webix-jet";
 import {companies} from "../models/companies";
 
 export default class Companies extends JetView {

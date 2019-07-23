@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
+import {companies} from "../../models/companies";
 import SavePopup from "./savePopup";
 
 export default class Contacts extends JetView {
@@ -24,6 +25,7 @@ export default class Contacts extends JetView {
 									filename: "contacts",
 									columns: {
 										value: {header: "Full Name", width: 150},
+										CompanyId: {header: "Company", width: 150},
 										Phone: {header: "Phone", width: 100},
 										Email: {header: "Email", width: 100},
 										Birthday: {header: "Birthday", width: 100}
@@ -52,6 +54,14 @@ export default class Contacts extends JetView {
 							fillspace: true,
 							minWidth: 150,
 							sort: "string"
+						},
+						{
+							id: "CompanyId",
+							header: ["Company", {content: "richSelectFilter"}],
+							options: companies,
+							fillspace: true,
+							minWidth: 150,
+							sort: "date"
 						},
 						{
 							id: "Phone",
