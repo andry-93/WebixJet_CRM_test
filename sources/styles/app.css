@@ -53,3 +53,15 @@
 	font-size: 20px;
 	vertical-align: middle;
 }
+.webix_cell .wxi-trash,
+.webix_cell .wxi-pencil {
+    cursor: pointer;
+    transition: opacity 500ms;
+    opacity: .6;
+}
+
+.webix_cell .wxi-trash:hover,
+.webix_cell .wxi-pencil:hover {
+    cursor: pointer;
+    opacity: 1;
+}

@@ -40,6 +40,9 @@ export const contacts = new webix.DataCollection({
 		$init: (obj) => {
 			obj.value = `${obj.FirstName} ${obj.LastName}`;
 			obj.Birthday = dateFormat(obj.Birthday);
+		},
+		$save: (obj) => {
+			delete obj.value;
 		}
 	}
 });

@@ -12,15 +12,6 @@ export default class Companies extends JetView {
 							view: "icon",
 							icon: "fas fa-plus-circle",
 							click: () => { this.addRow(); }
-							// click() {
-							// 	const company = {
-							// 		value: "New company",
-							// 		Address: "",
-							// 		Skype: "",
-							// 		Phone: "",
-							// 		Email: ""};
-							// 	companies.add(company);
-							// }
 						},
 						{
 							view: "icon",
