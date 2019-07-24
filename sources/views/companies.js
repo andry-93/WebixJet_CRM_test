@@ -91,6 +91,7 @@ export default class Companies extends JetView {
 					rules: {
 						value: webix.rules.isNotEmpty,
 						Address: webix.rules.isNotEmpty,
+						Phone: webix.rules.isNumber,
 						Email: webix.rules.isEmail
 					}
 				}
@@ -124,6 +125,7 @@ export default class Companies extends JetView {
 		};
 		dataTable.editStop();
 		let id = companies.add(data, 0);
+		dataTable.validate();
 		dataTable.editRow(id);
 	}
 }

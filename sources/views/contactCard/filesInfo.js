@@ -3,7 +3,7 @@ import {files} from "../../models/files";
 
 export default class FilesInfo extends JetView {
 	config() {
-		const contactTable = {
+		const fileTable = {
 			view: "datatable",
 			localId: "filesTable",
 			select: true,
@@ -44,7 +44,7 @@ export default class FilesInfo extends JetView {
 
 		return {
 			rows: [
-				contactTable,
+				fileTable,
 				{
 					cols: [
 						{},
@@ -75,10 +75,13 @@ export default class FilesInfo extends JetView {
 		};
 	}
 
+	init() {
+		this.$$("filesTable").sync(files);
+	}
+
 	urlChange() {
 		files.waitData.then(() => {
 			files.data.filter(file => file.contactId.toString() === this.getParam("contactId", true).toString());
-			this.$$("filesTable").sync(files);
 		});
 	}
 

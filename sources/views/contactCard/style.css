@@ -28,3 +28,7 @@
     line-height: 30px;
     flex: 1;
 }
+
+.contact-info .webix_template>div>i {
+    width: 15px;
+}

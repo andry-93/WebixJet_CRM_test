@@ -2,6 +2,7 @@ import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
 import {companies} from "../../models/companies";
 import FilesInfo from "./filesInfo";
+import Interview from "./interview";
 
 export default class ContactView extends JetView {
 	config() {
@@ -59,7 +60,22 @@ export default class ContactView extends JetView {
 								Info
 							]
 						},
-						{id: "FilesInfo", $subview: FilesInfo}
+						{height: 10},
+						{
+							view: "tabbar",
+							localId: "contactTableTabBar",
+							multiview: true,
+							options: [
+								{id: "Interview", value: "Interview"},
+								{id: "FilesInfo", value: "Files"}
+							]
+						},
+						{
+							cells: [
+								{id: "Interview", $subview: Interview},
+								{id: "FilesInfo", $subview: FilesInfo}
+							]
+						}
 					]
 				}
 			]
@@ -88,7 +104,7 @@ export default class ContactView extends JetView {
 	selectedContactImg(obj) {
 		let photo = obj.Photo || "./sources/styles/img/nouser.jpg";
 		return `
-			<img src="${photo}" class="contact-info_photo" ondragstart="return false"/>
+			<img alt="contact photo" src="${photo}" class="contact-info_photo" ondragstart="return false"/>
 		`;
 	}
 
