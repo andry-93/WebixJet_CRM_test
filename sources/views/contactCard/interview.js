@@ -10,12 +10,14 @@ export default class Interview extends JetView {
 				{
 					view: "icon",
 					icon: "fas fa-plus-circle",
+					tooltip: "Add field",
 					click: () => { this.addRow(); }
 				},
 				{},
 				{
 					view: "icon",
 					icon: "fas fa-sync-alt",
+					tooltip: "Refresh",
 					click() {
 						interview.refresh();
 					}
@@ -69,7 +71,8 @@ export default class Interview extends JetView {
 		const companyInfo = {
 			rows: [
 				{
-					template: "<strong>About company</strong>",
+					template: "About company",
+					css: "webix_header",
 					autoheight: true
 				},
 				{
@@ -83,17 +86,21 @@ export default class Interview extends JetView {
 		};
 
 		return {
-			margin: 1,
-			cols: [
-				{
-					gravity: 2,
-					rows: [
-						toolbar,
-						interviewTable
-					]
-				},
-				companyInfo
-			]
+			view: "scrollview",
+			scroll: "auto",
+			minHeight: 200,
+			body: {
+				cols: [
+					{
+						gravity: 2,
+						rows: [
+							toolbar,
+							interviewTable
+						]
+					},
+					companyInfo
+				]
+			}
 		};
 	}
 

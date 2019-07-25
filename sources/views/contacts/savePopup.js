@@ -1,6 +1,5 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
-import {companies} from "../../models/companies";
 
 export default class SaveForm extends JetView {
 	config() {
@@ -39,10 +38,9 @@ export default class SaveForm extends JetView {
 						label: "Last name"
 					},
 					{
-						view: "richselect",
+						view: "text",
 						label: "Company",
-						name: "CompanyId",
-						options: companies
+						name: "Company"
 					},
 					{
 						view: "text",

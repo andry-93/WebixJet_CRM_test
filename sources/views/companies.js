@@ -11,11 +11,13 @@ export default class Companies extends JetView {
 						{
 							view: "icon",
 							icon: "fas fa-plus-circle",
+							tooltip: "Add field",
 							click: () => { this.addRow(); }
 						},
 						{
 							view: "icon",
 							icon: "far fa-file-excel",
+							tooltip: "Export",
 							click() {
 								webix.toExcel(this.$scope.$$("companyTable"), {
 									filename: "companies",
@@ -33,6 +35,7 @@ export default class Companies extends JetView {
 						{
 							view: "icon",
 							icon: "fas fa-sync-alt",
+							tooltip: "Refresh",
 							click() {
 								companies.refresh();
 							}

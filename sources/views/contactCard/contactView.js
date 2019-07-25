@@ -18,7 +18,7 @@ export default class ContactView extends JetView {
 							template: this.selectedName,
 							autoheight: true,
 							borderless: true,
-							css: "contact-info",
+							css: "webix_header",
 							localId: "templateName"
 						},
 						{}
@@ -92,13 +92,13 @@ export default class ContactView extends JetView {
 				let contactItem = contacts.getItem(id);
 				this.$$("templateName").setValues({value: contactItem.value});
 				this.$$("templateImg").setValues({Photo: contactItem.Photo});
-				this.$$("templateInfo").setValues({...contactItem, Company: companies.getItem(contactItem.CompanyId).value});
+				this.$$("templateInfo").setValues(contactItem);
 			}
 		});
 	}
 
 	selectedName(obj) {
-		return `<span><strong>${obj.value || ""}</strong></span>`;
+		return `<span>${obj.value || ""}</span>`;
 	}
 
 	selectedContactImg(obj) {

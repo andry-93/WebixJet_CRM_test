@@ -1,6 +1,5 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
-import {companies} from "../../models/companies";
 import SavePopup from "./savePopup";
 
 export default class Contacts extends JetView {
@@ -13,6 +12,7 @@ export default class Contacts extends JetView {
 						{
 							view: "icon",
 							icon: "fas fa-plus-circle",
+							tooltip: "Add field",
 							click() {
 								this.$scope.window.showWindow();
 							}
@@ -20,12 +20,13 @@ export default class Contacts extends JetView {
 						{
 							view: "icon",
 							icon: "far fa-file-excel",
+							tooltip: "Export",
 							click() {
 								webix.toExcel(this.$scope.$$("contactTable"), {
 									filename: "contacts",
 									columns: {
 										value: {header: "Full Name", width: 150},
-										CompanyId: {header: "Company", width: 150},
+										Company: {header: "Company", width: 150},
 										Phone: {header: "Phone", width: 100},
 										Email: {header: "Email", width: 100},
 										Birthday: {header: "Birthday", width: 100}
@@ -37,6 +38,7 @@ export default class Contacts extends JetView {
 						{
 							view: "icon",
 							icon: "fas fa-sync-alt",
+							tooltip: "Refresh",
 							click() {
 								contacts.refresh();
 							}
@@ -56,12 +58,11 @@ export default class Contacts extends JetView {
 							sort: "string"
 						},
 						{
-							id: "CompanyId",
-							header: ["Company", {content: "richSelectFilter"}],
-							options: companies,
+							id: "Company",
+							header: ["Company", {content: "textFilter"}],
 							fillspace: true,
 							minWidth: 150,
-							sort: "date"
+							sort: "string"
 						},
 						{
 							id: "Phone",

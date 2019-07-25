@@ -3,6 +3,41 @@ import {files} from "../../models/files";
 
 export default class FilesInfo extends JetView {
 	config() {
+		const toolbar = {
+			view: "toolbar",
+			cols: [
+				{
+					view: "uploader",
+					type: "icon",
+					autowidth: true,
+					icon: "fas fa-cloud-upload-alt",
+					autosend: false,
+					tooltip: "Upload files",
+					on: {
+						onBeforeFileAdd: (upload) => {
+							const id = this.getParam("contactId", true);
+							files.add({
+								Name: upload.name,
+								Change: upload.file.lastModifiedDate,
+								Size: upload.file.size,
+								contactId: id
+							});
+							return false;
+						}
+					}
+				},
+				{},
+				{
+					view: "icon",
+					icon: "fas fa-sync-alt",
+					tooltip: "Refresh",
+					click() {
+						files.refresh();
+					}
+				}
+			]
+		};
+
 		const fileTable = {
 			view: "datatable",
 			localId: "filesTable",
@@ -44,31 +79,10 @@ export default class FilesInfo extends JetView {
 
 		return {
 			rows: [
-				fileTable,
 				{
-					cols: [
-						{},
-						{
-							autowidth: true,
-							view: "uploader",
-							type: "icon",
-							label: " Upload file",
-							icon: "fas fa-cloud-upload-alt",
-							autosend: false,
-							on: {
-								onBeforeFileAdd: (upload) => {
-									const id = this.getParam("contactId", true);
-									files.add({
-										Name: upload.name,
-										Change: upload.file.lastModifiedDate,
-										Size: upload.file.size,
-										contactId: id
-									});
-									return false;
-								}
-							}
-						},
-						{}
+					rows: [
+						toolbar,
+						fileTable
 					]
 				}
 			]
