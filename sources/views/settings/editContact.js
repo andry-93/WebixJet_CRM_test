@@ -28,9 +28,24 @@ export default class EditContact extends JetView {
 							label: "Last name"
 						},
 						{
-							view: "text",
-							label: "Company",
-							name: "Company"
+							margin: 20,
+							cols: [
+								{
+									view: "checkbox",
+									label: "Current Company",
+									labelWidth: 125,
+									localId: "currentCompany",
+									autowidth: true
+								},
+								{
+									view: "text",
+									label: "Company",
+									name: "Company",
+									localId: "company",
+									uncheckValue: false,
+									checkValue: true
+								}
+							]
 						},
 						{
 							view: "text",
@@ -91,6 +106,14 @@ export default class EditContact extends JetView {
 	init() {
 		const onSave = this.$$("onSave");
 		const formView = this.$$("editForm");
+		const check = this.$$("currentCompany");
+		const company = this.$$("company");
+		this.on(check, "onChange", () => {
+			if (!check.getValue()) {
+				company.disable();
+			}
+			else company.enable();
+		});
 		this.on(onSave, "onItemClick", () => {
 			if (formView.validate()) {
 				const formValues = formView.getDirtyValues();
@@ -102,8 +125,13 @@ export default class EditContact extends JetView {
 	urlChange() {
 		let id = this.getParam("contactId", true);
 		const formView = this.$$("editForm");
+		const check = this.$$("currentCompany");
 		contacts.waitData.then(() => {
 			formView.setValues(contacts.getItem(id));
+			if (formView.getValues().Company) {
+				check.setValue(true);
+			}
+			else check.setValue(false);
 		});
 	}
 }
