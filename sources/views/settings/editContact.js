@@ -88,10 +88,21 @@ export default class EditContact extends JetView {
 		};
 	}
 
+	init() {
+		const onSave = this.$$("onSave");
+		const formView = this.$$("editForm");
+		this.on(onSave, "onItemClick", () => {
+			if (formView.validate()) {
+				const formValues = formView.getDirtyValues();
+				contacts.updateItem(formView.getValues().id, formValues);
+			}
+		});
+	}
+
 	urlChange() {
 		let id = this.getParam("contactId", true);
+		const formView = this.$$("editForm");
 		contacts.waitData.then(() => {
-			const formView = this.$$("editForm");
 			formView.setValues(contacts.getItem(id));
 		});
 	}
