@@ -127,10 +127,12 @@ export default class SaveForm extends JetView {
 	onSaveClick() {
 		const formView = this.getFormView();
 		if (formView.validate()) {
-			if (this.$scope.id) {
+			if (!this.$scope.id) {
+				contacts.add(formView.getValues());
+			}
+			else {
 				contacts.updateItem(this.$scope.id, formView.getValues());
 			}
-			else contacts.add(formView.getValues());
 			this.$scope.closeWindow();
 		}
 	}
