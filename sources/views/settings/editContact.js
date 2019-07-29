@@ -79,6 +79,58 @@ export default class EditContact extends JetView {
 						},
 						{
 							cols: [
+								{
+									paddingY: 3,
+									paddingX: 2,
+									width: 160,
+									rows: [
+										{
+											borderless: false,
+											type: "clean",
+											data: {
+												Photo: "./sources/styles/img/nouser.jpg"
+											},
+											template: "<div style='height: 100%; background-size: cover; background-position: center; background-image: url(#Photo#)'></div>",
+											localId: "contactPhoto"
+										}
+									]
+								},
+								{
+									width: 150,
+									rows: [
+										{
+											view: "uploader",
+											value: "Change photo",
+											accept: "image/jpeg, image/png, image/jpg",
+											multiple: false,
+											on: {
+												onBeforeFileAdd: (upload) => {
+													const file = upload.file;
+													const contactPhoto = this.$$("contactPhoto");
+													let reader = new FileReader();
+													reader.onload = (evt) => {
+														contactPhoto.setValues({Photo: evt.target.result});
+													};
+													reader.readAsDataURL(file);
+													return false;
+												}
+											}
+										},
+										{
+											view: "button",
+											label: "Delete photo",
+											click: () => {
+												this.$$("contactPhoto").setValues({Photo: "./sources/styles/img/nouser.jpg"});
+											}
+										},
+										{}
+									]
+								},
+								{}
+							]
+						},
+						{
+							cols: [
 								{},
 								{
 									view: "button",
@@ -108,17 +160,21 @@ export default class EditContact extends JetView {
 		const formView = this.$$("editForm");
 		const check = this.$$("currentCompany");
 		const company = this.$$("company");
-		this.on(check, "onChange", () => {
-			if (!check.getValue()) {
-				company.disable();
-			}
-			else company.enable();
-		});
-		this.on(onSave, "onItemClick", () => {
-			if (formView.validate()) {
-				const formValues = formView.getDirtyValues();
-				contacts.updateItem(formView.getValues().id, formValues);
-			}
+		const contactPhoto = this.$$("contactPhoto");
+		contacts.waitData.then(() => {
+			this.on(check, "onChange", () => {
+				if (!check.getValue()) {
+					company.disable();
+				}
+				else company.enable();
+			});
+			this.on(onSave, "onItemClick", () => {
+				if (formView.validate()) {
+					const formValues = formView.getDirtyValues();
+					formValues.Photo = contactPhoto.getValues().Photo;
+					contacts.updateItem(formView.getValues().id, formValues);
+				}
+			});
 		});
 	}
 
@@ -126,8 +182,14 @@ export default class EditContact extends JetView {
 		let id = this.getParam("contactId", true);
 		const formView = this.$$("editForm");
 		const check = this.$$("currentCompany");
+		const contactPhoto = this.$$("contactPhoto");
 		contacts.waitData.then(() => {
-			formView.setValues(contacts.getItem(id));
+			const contact = contacts.getItem(id);
+
+			if (contact.Photo || contact.Photo !== "") {
+				contactPhoto.setValues({Photo: contact.Photo});
+			}
+			formView.setValues(contact);
 			if (formView.getValues().Company) {
 				check.setValue(true);
 			}
