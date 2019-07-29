@@ -80,7 +80,8 @@ export default class SaveForm extends JetView {
 								localId: "onSave",
 								label: "Add (*save)",
 								autowidth: true,
-								css: "webix_primary"
+								css: "webix_primary",
+								click: this.onSaveClick
 							},
 							{
 								view: "button",
@@ -102,18 +103,6 @@ export default class SaveForm extends JetView {
 		};
 	}
 
-	init() {
-		const formView = this.$$("editForm");
-		const button = this.$$("onSave");
-		this.on(button, "onItemClick", () => {
-			if (formView.validate()) {
-				if (this.id) { contacts.updateItem(this.id, formView.getValues()); }
-				else { contacts.add(formView.getValues()); }
-				this.closeWindow();
-			}
-		});
-	}
-
 	showWindow(id) {
 		this.getRoot().show();
 		this.id = id;
@@ -133,5 +122,14 @@ export default class SaveForm extends JetView {
 		formView.clear();
 		formView.clearValidation();
 		this.getRoot().hide();
+	}
+
+	onSaveClick() {
+		const formView = this.getFormView();
+		if (formView.validate()) {
+			if (this.$scope.id) { contacts.updateItem(this.$scope.id, formView.getValues()); }
+			else { contacts.add(formView.getValues()); }
+			this.$scope.closeWindow();
+		}
 	}
 }

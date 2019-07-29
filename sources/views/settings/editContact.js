@@ -35,7 +35,10 @@ export default class EditContact extends JetView {
 									label: "Current Company",
 									labelWidth: 125,
 									localId: "currentCompany",
-									autowidth: true
+									autowidth: true,
+									on: {
+										onChange: this.onChangeCheck
+									}
 								},
 								{
 									view: "text",
@@ -137,7 +140,8 @@ export default class EditContact extends JetView {
 									localId: "onSave",
 									label: "Save",
 									autowidth: true,
-									css: "webix_primary"
+									css: "webix_primary",
+									click: this.onSaveClick
 								}
 							]
 						},
@@ -155,29 +159,6 @@ export default class EditContact extends JetView {
 		};
 	}
 
-	init() {
-		const onSave = this.$$("onSave");
-		const formView = this.$$("editForm");
-		const check = this.$$("currentCompany");
-		const company = this.$$("company");
-		const contactPhoto = this.$$("contactPhoto");
-		contacts.waitData.then(() => {
-			this.on(check, "onChange", () => {
-				if (!check.getValue()) {
-					company.disable();
-				}
-				else company.enable();
-			});
-			this.on(onSave, "onItemClick", () => {
-				if (formView.validate()) {
-					const formValues = formView.getDirtyValues();
-					formValues.Photo = contactPhoto.getValues().Photo;
-					contacts.updateItem(formView.getValues().id, formValues);
-				}
-			});
-		});
-	}
-
 	urlChange() {
 		let id = this.getParam("contactId", true);
 		const formView = this.$$("editForm");
@@ -185,6 +166,7 @@ export default class EditContact extends JetView {
 		const contactPhoto = this.$$("contactPhoto");
 		contacts.waitData.then(() => {
 			const contact = contacts.getItem(id);
+			const company = this.$$("company");
 
 			if (contact.Photo || contact.Photo !== "") {
 				contactPhoto.setValues({Photo: contact.Photo});
@@ -192,8 +174,32 @@ export default class EditContact extends JetView {
 			formView.setValues(contact);
 			if (formView.getValues().Company) {
 				check.setValue(true);
+				company.enable();
 			}
-			else check.setValue(false);
+			else {
+				check.setValue(false);
+				company.disable();
+				company.setValue("");
+			}
 		});
+	}
+
+	onSaveClick() {
+		const formView = this.getFormView();
+		if (formView.validate()) {
+			const contactPhoto = this.$scope.$$("contactPhoto");
+			const formValues = formView.getDirtyValues();
+			formValues.Photo = contactPhoto.getValues().Photo;
+			contacts.updateItem(formView.getValues().id, formValues);
+		}
+	}
+
+	onChangeCheck() {
+		const company = this.$scope.$$("company");
+		if (!this.getValue()) {
+			company.disable();
+			company.setValue("");
+		}
+		else company.enable();
 	}
 }
