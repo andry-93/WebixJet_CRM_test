@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {companies} from "../models/companies";
+import {interview} from "../models/interview";
 
 export default class Companies extends JetView {
 	config() {
@@ -107,11 +108,15 @@ export default class Companies extends JetView {
 	}
 
 	deleteColumn(_e, id) {
+		const interviewList = interview.find(obj => +obj.CompanyId === +id);
 		webix.confirm({
 			title: "Delete",
 			text: "Are you sure?"
 		}).then(() => {
 			companies.remove(id);
+			if (!this.$scope.isEmpty(interviewList)) {
+				interviewList.forEach(obj => interview.remove(obj.id));
+			}
 		});
 		return false;
 	}
@@ -130,5 +135,9 @@ export default class Companies extends JetView {
 		let id = companies.add(data, 0);
 		dataTable.validate();
 		dataTable.editRow(id);
+	}
+
+	isEmpty(obj) {
+		return Object.keys(obj).length === 0;
 	}
 }

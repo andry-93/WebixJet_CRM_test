@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
+import {interview} from "../../models/interview";
 import SavePopup from "./savePopup";
 
 export default class Contacts extends JetView {
@@ -107,12 +108,21 @@ export default class Contacts extends JetView {
 	}
 
 	deleteColumn(_e, id) {
+		const interviewList = interview.find(obj => +obj.ContactId === +id.toString());
 		webix.confirm({
 			title: "Delete",
 			text: "Are you sure?"
 		}).then(() => {
 			contacts.remove(id);
+			if (!this.$scope.isEmpty(interviewList)) {
+				interviewList.forEach(obj => interview.remove(obj.id));
+			}
 		});
 		return false;
+	}
+
+
+	isEmpty(obj) {
+		return Object.keys(obj).length === 0;
 	}
 }
