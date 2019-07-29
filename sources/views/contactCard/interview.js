@@ -48,9 +48,16 @@ export default class Interview extends JetView {
 					id: "Date",
 					header: "Date",
 					sort: "date",
-					width: 150,
+					adjust: true,
 					editor: "date",
-					format: webix.i18n.longDateFormatStr
+					suggest: {
+						type: "calendar",
+						body: {
+							weekNumber: true,
+							timepicker: true
+						}
+					},
+					format: webix.i18n.fullDateFormatDate
 				},
 				{
 					id: "delete",
