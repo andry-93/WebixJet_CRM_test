@@ -1,8 +1,11 @@
 let express = require("express");
 let bodyParser = require("body-parser");
 let cors = require("cors");
+let MongoClient = require("mongodb").MongoClient;
+let ObjectID = require("mongodb").ObjectID;
 
-let app = express();
+const app = express();
+let db;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -52,17 +55,31 @@ app.get("/", (req, res) => {
 });
 
 app.get("/contacts", (req, res) => {
-	res.status(200).send(contacts);
+	db.collection("contacts").find().toArray((err, docs) => {
+		if (err) {
+			console.log(err);
+			res.status(500);
+		}
+		else {
+			res.status(200).send(docs);
+		}
+	});
 });
 
 app.get("/contacts/:id", (req, res) => {
-	let contact = contacts.find(_contact => _contact.id === Number(req.params.id));
-	res.status(200).send(contact);
+	db.collection("contacts").findOne({_id: ObjectID(req.params.id)}, (err, doc) => {
+		if (err) {
+			console.log(err);
+			res.status(500);
+		}
+		else {
+			res.status(200).send(doc);
+		}
+	});
 });
 
 app.post("/contacts", (req, res) => {
 	let contact = {
-		id: Date.now(),
 		FirstName: req.body.FirstName,
 		LastName: req.body.LastName,
 		Address: req.body.Address,
@@ -73,9 +90,16 @@ app.post("/contacts", (req, res) => {
 		Photo: req.body.Photo,
 		Birthday: req.body.Birthday
 	};
-
-	contacts.push(contact);
-	res.status(200).send(contact);
+	db.collection("contacts").insert(contact, (err) => {
+		if (err) {
+			console.log(err);
+			res.status(500);
+		}
+		else {
+			res.status(200).send(contact);
+		}
+	});
+	// res.status(200).send(contact);
 });
 
 app.put("/contacts/:id", (req, res) => {
@@ -97,6 +121,18 @@ app.delete("/contacts/:id", (req, res) => {
 	res.status(200).send();
 });
 
-app.listen(3012, () => {
-	console.log("API app started");
+// app.listen(3012, () => {
+// 	console.log("API app started");
+// });
+
+MongoClient.connect("mongodb://localhost:27017/task4", {useNewUrlParser: true}, (err, database) => {
+	if (err) {
+		console.log(err);
+	}
+	else {
+		db = database.db("task4");
+		app.listen(3012, () => {
+			console.log("API app started");
+		});
+	}
 });
