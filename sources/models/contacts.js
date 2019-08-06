@@ -53,6 +53,7 @@ export const contacts = new webix.DataCollection({
 
 		$save: (obj) => {
 			delete obj.value;
+			obj.id = obj._id;
 		}
 	}
 });
