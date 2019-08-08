@@ -4,18 +4,18 @@ const state = {
 	db: null
 };
 
-exports.connect = (url, done) => {
+exports.connect = (url, callback) => {
 	if (state.db) {
 		done();
 	}
 
 	MongoClient.connect(url, {useNewUrlParser: true}, (err, database) => {
 		if (err) {
-			done(err);
+			callback(err);
 		}
 		else {
 			state.db = database.db("task4");
-			done();
+			callback();
 		}
 	});
 };

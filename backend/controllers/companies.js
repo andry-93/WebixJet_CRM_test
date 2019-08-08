@@ -1,7 +1,7 @@
-const Contacts = require("../models/contacts");
+const Companies = require("../models/companies");
 
 exports.all = (req, res) => {
-	Contacts.all((err, docs) => {
+	Companies.all((err, docs) => {
 		if (err) {
 			console.log(err);
 			res.status(500).send({status: "error"});
@@ -17,7 +17,7 @@ exports.all = (req, res) => {
 };
 
 exports.findById = (req, res) => {
-	Contacts.findById(req.params.id, (err, doc) => {
+	Companies.findById(req.params.id, (err, doc) => {
 		if (err) {
 			console.log(err);
 			res.status(500).send({status: "error"});
@@ -31,41 +31,33 @@ exports.findById = (req, res) => {
 };
 
 exports.create = (req, res) => {
-	let contact = {
-		FirstName: req.body.FirstName,
-		LastName: req.body.LastName,
+	let company = {
+		value: req.body.value,
 		Address: req.body.Address,
-		Company: req.body.Company,
 		Skype: req.body.Skype,
 		Phone: req.body.Phone,
-		Email: req.body.Email,
-		Photo: req.body.Photo,
-		Birthday: req.body.Birthday
+		Email: req.body.Email
 	};
-	Contacts.create(contact, (err, result) => {
+	Companies.create(company, (err, result) => {
 		if (err) {
 			console.log(err);
 			res.status(500).send({status: "error"});
 		}
 		else {
-			contact.id = contact._id;
-			delete contact._id;
-			res.status(200).send(contact);
+			company.id = company._id;
+			delete company._id;
+			res.status(200).send(company);
 		}
 	});
 };
 
 exports.update = (req, res) => {
-	Contacts.update(req.params.id, {
-		FirstName: req.body.FirstName,
-		LastName: req.body.LastName,
+	Companies.update(req.params.id, {
+		value: req.body.value,
 		Address: req.body.Address,
-		Company: req.body.Company,
 		Skype: req.body.Skype,
 		Phone: req.body.Phone,
-		Email: req.body.Email,
-		Photo: req.body.Photo,
-		Birthday: req.body.Birthday
+		Email: req.body.Email
 	}, (err, result) => {
 		if (err) {
 			console.log(err);
@@ -78,7 +70,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-	Contacts.delete(req.params.id, (err, result) => {
+	Companies.delete(req.params.id, (err, result) => {
 		if (err) {
 			console.log(err);
 			res.status(500).send({status: "error"});
