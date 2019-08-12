@@ -4,6 +4,7 @@ const cors = require("cors");
 const db = require("./db");
 const contactsController = require("./controllers/contacts");
 const companiesController = require("./controllers/companies");
+const interviewController = require("./controllers/interview");
 
 const app = express();
 
@@ -26,6 +27,12 @@ app.get("/companies/:id", companiesController.findById);
 app.post("/companies", companiesController.create);
 app.put("/companies/:id", companiesController.update);
 app.delete("/companies/:id", companiesController.delete);
+
+app.get("/interview", interviewController.all);
+app.get("/interview/:id", interviewController.findById);
+app.post("/interview", interviewController.create);
+app.put("/interview/:id", interviewController.update);
+app.delete("/interview/:id", interviewController.delete);
 
 db.connect("mongodb://localhost:27017/task4", (err) => {
 	if (err) {

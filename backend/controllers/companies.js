@@ -11,7 +11,31 @@ exports.all = (req, res) => {
 				item.id = item._id;
 				delete item._id;
 			});
-			res.status(200).send(docs);
+
+			docs.sort((a, b) => {
+				if (req.query.sort) {
+					let sort = Object.keys(req.query.sort)[0];
+					if (a[sort] > b[sort]) {
+						return req.query.sort[sort] === "asc" ? 1 : -1;
+					}
+
+					if (b[sort] > a[sort]) {
+						return req.query.sort[sort] === "asc" ? -1 : 1;
+					}
+
+					return 0;
+				}
+			});
+
+			let loadData = {};
+			let count = +req.query.count;
+			let start = +req.query.start;
+			let end = count + start;
+			loadData.data = docs.slice(start, end);
+			loadData.pos = +req.query.start;
+			loadData.total_count = docs.length;
+
+			res.status(200).send(loadData);
 		}
 	});
 };

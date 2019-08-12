@@ -2,9 +2,10 @@ const {ObjectID} = require("mongodb");
 const db = require("../db");
 
 exports.all = (callback) => {
-	db.get().collection("companies").find().toArray((err, docs) => {
-		callback(err, docs);
-	});
+	db.get().collection("companies").find()
+		.toArray((err, docs) => {
+			callback(err, docs);
+		});
 };
 
 exports.findById = (id, callback) => {
