@@ -106,13 +106,16 @@ export default class EditContact extends JetView {
 											value: "Change photo",
 											accept: "image/jpeg, image/png, image/jpg",
 											multiple: false,
+											upload: "http://localhost:3012/upload/",
+											name: "imgFile",
+											inputName: "imgFile",
 											on: {
-												onBeforeFileAdd: (upload) => {
+												onFileUpload: (upload) => {
 													const file = upload.file;
 													const contactPhoto = this.$$("contactPhoto");
 													let reader = new FileReader();
-													reader.onload = (evt) => {
-														contactPhoto.setValues({Photo: evt.target.result});
+													reader.onload = () => {
+														contactPhoto.setValues({Photo: upload.urlPuth});
 													};
 													reader.readAsDataURL(file);
 													return false;
@@ -132,6 +135,7 @@ export default class EditContact extends JetView {
 								{}
 							]
 						},
+						{},
 						{
 							cols: [
 								{},
@@ -144,8 +148,7 @@ export default class EditContact extends JetView {
 									click: this.onSaveClick
 								}
 							]
-						},
-						{}
+						}
 					],
 					rules: {
 						FirstName: webix.rules.isNotEmpty,

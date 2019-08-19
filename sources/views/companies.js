@@ -50,8 +50,7 @@ export default class Companies extends JetView {
 					rightSplit: 1,
 					editable: true,
 					editaction: "dblclick",
-					datafetch: 30,
-					loadahead: 15,
+					datafetch: 20,
 					columns: [
 						{
 							id: "value",
@@ -91,7 +90,6 @@ export default class Companies extends JetView {
 						},
 						{header: "", width: 40, template: "{common.trashIcon()}"}
 					],
-					url: "http://localhost:3012/companies/",
 					save: "rest->http://localhost:3012/companies/",
 					onClick: {
 						"wxi-trash": this.deleteColumn
@@ -108,7 +106,7 @@ export default class Companies extends JetView {
 	}
 
 	init() {
-		// this.$$("companyTable").sync(companies);
+		this.$$("companyTable").loadNext("", "", "", "http://localhost:3012/companies/");
 	}
 
 	deleteColumn(_e, id) {

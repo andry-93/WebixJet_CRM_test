@@ -28,14 +28,20 @@ exports.all = (req, res) => {
 			});
 
 			let loadData = {};
-			let count = +req.query.count;
-			let start = +req.query.start;
-			let end = count + start;
-			loadData.data = docs.slice(start, end);
-			loadData.pos = +req.query.start;
-			loadData.total_count = docs.length;
 
-			res.status(200).send(loadData);
+			if (req.query.count && req.query.start) {
+				let count = +req.query.count;
+				let start = +req.query.start;
+				let end = count + start;
+				loadData.data = docs.slice(start, end);
+				loadData.pos = +req.query.start;
+				loadData.total_count = docs.length;
+				res.status(200).send(loadData);
+			}
+			else {
+				loadData.data = docs;
+				res.status(200).send(loadData);
+			}
 		}
 	});
 };

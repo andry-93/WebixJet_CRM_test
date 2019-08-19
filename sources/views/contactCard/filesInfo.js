@@ -11,17 +11,27 @@ export default class FilesInfo extends JetView {
 					type: "icon",
 					autowidth: true,
 					icon: "fas fa-cloud-upload-alt",
-					autosend: false,
 					tooltip: "Upload files",
+					upload: `http://localhost:3012/uploadAll/${this.getParam("contactId", true)}`,
+					name: "files",
+					inputName: "files",
 					on: {
-						onBeforeFileAdd: (upload) => {
+						onFileUpload: (upload) => {
 							const id = this.getParam("contactId", true);
-							files.add({
-								Name: upload.name,
-								Change: upload.file.lastModifiedDate,
-								Size: upload.file.size,
-								contactId: id
-							});
+							let fileCol = files.find(obj => obj.Name.indexOf(upload.name
+								.toLowerCase()
+								.split(" ")
+								.join("_")) !== -1);
+							if (fileCol.length === 0) {
+								files.add({
+									Name: upload.name
+										.toLowerCase()
+										.split(" ")
+										.join("_"),
+									contactId: id,
+									urlPuth: upload.urlPuth
+								});
+							}
 							return false;
 						}
 					}
@@ -43,7 +53,6 @@ export default class FilesInfo extends JetView {
 			localId: "filesTable",
 			select: true,
 			scroll: true,
-			rightSplit: 1,
 			columns: [
 				{
 					id: "Name",
@@ -53,28 +62,13 @@ export default class FilesInfo extends JetView {
 					fillspace: true
 				},
 				{
-					id: "Change",
-					header: "Change date",
-					sort: "date",
-					width: 150,
-					format: webix.i18n.longDateFormatStr
-				},
-				{
-					id: "Size",
-					header: "Size",
-					template: obj => `${Math.floor(obj.Size / 1024)} Kb`,
-					sort: obj => obj.Size
-				},
-				{
-					id: "delete",
-					header: "",
-					template: "{common.trashIcon()}",
-					width: 40
+					id: "urlPuth",
+					header: "Puth",
+					minWidth: 150,
+					template: "<a href='#urlPuth#'>#urlPuth#</a>",
+					fillspace: true
 				}
-			],
-			onClick: {
-				"wxi-trash": this.deleteColumn
-			}
+			]
 		};
 
 		return {
